@@ -68,7 +68,8 @@ app.get('/greetings', (req,res) =>{
   res.send(greeting);
 })
 
-//assignment 1.) my solution Q: Where are the numbers coming from?
+//assignment 1.) Create a route handler function on the path /sum that accepts two query parameters named a and b and find the sum of the two values.Return a string in the format "The sum of a and b is c". Note that query parameters are always strings so some thought should be given to converting them to numbers.
+//my solution Q: Where are the numbers coming from?
 // app.get('/sum', (req, res)=> {
 //   const a = req.query.a;
 //   const b = req.query.b;
@@ -77,9 +78,10 @@ app.get('/greetings', (req,res) =>{
 //   res.send(sum)
 // })
 /*
-assignment 1.) their solution Create a route handler function on the path /sum that accepts two query parameters named a and b and find the sum of the two values.Return a string in the format "The sum of a and b is c". Note that query parameters are always strings so some thought should be given to converting them to numbers.
+assignment 1.) their solution 
 */
-//a is required
+//think of routes as functions example params: http://localhost:8000/sum?a=1&b=2
+//we're creating a response/request system that the client needs to request
 app.get('/sum', (req, res)=> {
   const a = req.query.a;
   const b = req.query.b;
@@ -97,6 +99,7 @@ app.get('/sum', (req, res)=> {
   const numB = parseFloat(b);
 
   //validate number
+  //Number is a javascript type number const numA = Number(A)
   if(Number.isNaN(numA)) {
     return res.status(400).send('a must be a number');
   }
@@ -126,10 +129,13 @@ app.get('/sum', (req, res)=> {
 // })
 
 /*assignment 2). their solution Create an endpoint /cipher. The handler function should accept a query parameter named text and one named shift. Encrypt the text using a simple shift cipher also known as a Caesar Cipher. It is a simple substitution cipher where each letter is shifted a certain number of places down the alphabet. So if the shift was 1 then A would be replaced by B, and B would be replaced by C and C would be replaced by D and so on until finally Z would be replaced by A. using this scheme encrypt the text with the given shift and return the result to the client. Hint - String.fromCharCode(65) is an uppercase A and 'A'.charCodeAt(0) is the number 65. 65 is the integer value of uppercase A in UTF-16. See the documentation for details. */
-//no shift available
-app.get('/cipher', (req, res) => {
+//encryption log algorithms primitive encryption schemes open-sourced library called decrypt OWASP Top Ten https://owasp.org/www-project-top-ten/ 
+//input: abc output: def
+// http://localhost:8000/cipher?shift=3&text=abc
+app.all('/cipher', (req, res) => {
   const { shift, text } = req.query;
 
+  //1. you should have some kind of validation for each query parameters to make sure it's there first
   // validation: both values required, shift must be a number
   if(!shift) {
     res.status(400).send(`No shift available.`)
@@ -140,11 +146,12 @@ app.get('/cipher', (req, res) => {
   //parse to appropriate data type
   const numShift = parseFloat(shift);
 
-  if(Number.isNaN(numShift)) {
+  if(isNaN(numShift)) {
     res.status(400).send('Shift must be a number');
   }
 
-  const base = 'A'.charCodeAt(0);
+  //creating a baseline for converting letters to numbers
+  const base = 'A'.charCodeAt(0); 
 
   const cipher = text
     .toUpperCase()
@@ -162,7 +169,7 @@ app.get('/cipher', (req, res) => {
       let diff = code - base;
       diff = diff + numShift; 
       
-      // in case shift takes the value past Z, cycle back to the beginning
+      // in case shift takes the value past Z, cycle back to the beginning ("remainder")
       diff = diff % 26;
 
       // convert back to a character
@@ -183,6 +190,7 @@ app.get('/cipher', (req, res) => {
   // 2. must be an array
   // 3. must be 6 numbers
   // 4. numbers must be between 1 and 20
+  
   // app.get('/lotto', (req,res) => {
   //   const { lotto } = req.query;
 
@@ -279,10 +287,6 @@ app.get('/lotto', (req, res) => {
     default:
       responseText = 'Sorry, you lose';  
   }
-
-
-  // uncomment below to see how the results ran
-
   res.json({
     guesses,
     winningNumbers,
@@ -292,6 +296,109 @@ app.get('/lotto', (req, res) => {
 
   res.send(responseText);
 });
+
+app.get('/video', (req, res) => {
+  const video = {
+    title: 'Cats falling over',
+    description: '15 minutes of hilarious fun as cats fall over',
+    length: '15.40'
+  }
+  res.json(video);
+});
+
+app.get('/colors', (req, res) => {
+  const colors = [
+    {
+      name: "red",
+      rgb: "FF0000"
+    },
+    {
+      name: "green",
+      rgb: "00FF00"
+    },
+    {
+      name: "blue",
+      rgb: "0000FF"
+    },
+  ];
+  res.json(colors);
+});
+
+//my solution: Let us create an endpoint at path /grade that takes a query parameter mark that is a number between 0 and 100. 
+//return a single letter grade, "A" for a mark 90 and above, "B" for marks 80 to 89, "C" for marks 70 to 79 and "F" otherwise
+/*returning: "Please enter a grade value" (12/2)*/
+// app.get('/grade', (req,res) => {
+//   const { gradeNumber } = req.query;
+
+//   if(!gradeNumber) {
+//     res.status(400).send(`Please enter a grade value`);
+//   }
+//   // const letterGrade = gradeNumber;
+//   // switch(letterGrade) {
+//   //   case 'A' ? letterGrade >= 90 : 'A': '';
+//   //   case 'B' ? letterGrade >=80 <90 : 'B': ''
+//   // }
+//   if(gradeNumber >90) {
+//     res.status(200).send('You received an A!');
+//   }
+//   if(gradeNumber >=80 || gradeNumber <90) {
+//     res.status(200).send('You received a B!');
+//   }
+//   if(gradeNumber >=70 || gradeNumber <80) {
+//     res.status(200).send('You received a C');
+//   }
+//   if(gradeNumber >=60 || gradeNumber <70) {
+//     res.status(200).send('Grade received: D');
+//   }
+//   if(gradeNumber >60) {
+//     res.status(200).send('Grade received: F');
+//   }
+//   res.send(gradeNumber)
+// })
+//their solution
+app.get('/grade', (req, res) => {
+  // get the mark from the query
+  const { mark } = req.query;
+
+  // do some validation
+  if (!mark) {
+    // mark is required
+    return res
+      .status(400)
+      .send('Please provide a mark');
+  }
+
+  const numericMark = parseFloat(mark);
+  if (Number.isNaN(numericMark)) {
+    // mark must be a number
+    return res
+      .status(400)
+      .send('Mark must be a numeric value');
+  }
+
+  if (numericMark < 0 || numericMark > 100) {
+    // mark must be in range 0 to 100
+    return res
+      .status(400)
+      .send('Mark must be in range 0 to 100');
+  }
+
+  if (numericMark >= 90) {
+    return res.send('A');
+  }
+
+  if (numericMark >= 80) {
+    return res.send('B');
+  }
+
+  if (numericMark >= 70) {
+    return res.send('C');
+  }
+
+  res.send('F');
+});
+
+
 app.listen(8000, ()=> {
   console.log('Express server is listening on port 8000!');
 })
