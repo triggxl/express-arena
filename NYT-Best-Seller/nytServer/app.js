@@ -13,8 +13,8 @@ const morgan = require('morgan');
 app.use(morgan('common'));
 const books = require('./books-data');
 // getting 404 despite installing middleware (12/3)
-const cors = require('cors');
-app.use(cors());
+// const cors = require('cors');
+// app.use(cors());
 
 app.get('/books', (req,res) => {
   const { search = '', sort } = req.query;
