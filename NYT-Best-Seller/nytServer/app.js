@@ -35,15 +35,12 @@ app.get('/books', (req,res) => {
   res.json(results);
 })
 
-app.listen((8000), ()=> {
-  console.log('Now Listening on Port 8000!')
-});
 /*
-Steps:
+Steps: New Node project
 1.) Create a new folder and initialize a Node application:
 2.) Create a script file, install nodemon, express and morgan.
 3.) Modify package.json to add scripts for the project.
-4.) Copy data into seperate directory
+4.) Copy data into seperate directory (or make API call to server..?)
 5.) Create the basic server in app.js with Express and add morgan.
 6.) Run the server and we are all set to start implementing the solution.
 

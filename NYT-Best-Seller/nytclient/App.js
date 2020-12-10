@@ -42,7 +42,7 @@ class App extends React.Component {
         error: null
       }).catch(err => {
         this.setState({
-          error: 'Sorry, could not get any books at this time'
+          error: 'Sorry, could not grab any books at this time'
         })
       })
 
@@ -85,8 +85,10 @@ class App extends React.Component {
 
 export default App;
 
+
+
 /*
-Instructions:
+Instructions for CRA (Client):
 
 1.) Open your command line or terminal
 2.) cd to your thinkful projects directory
