@@ -3,7 +3,7 @@ const app = require('app');
 const { expect } = require('chai');
 
 describe('Google Play apps', () => {
-  it.skip('should return 400 if input is invalid', () => {
+  it('should return 400 if input is invalid', () => {
 
   })
   it('should return complete list of apps by default', () => {
